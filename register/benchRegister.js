@@ -7,7 +7,7 @@ class benchRegister extends benchBase {
   constructor(options) {
     super(options);
   }
-  run(url) {
+  async run(url) {
     var wellKnown = await this.getWellKnown();
     if (DEBUG) {
       console.log(wellKnown);
