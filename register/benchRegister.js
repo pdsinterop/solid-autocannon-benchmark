@@ -1,68 +1,18 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
+const autocannon = require('autocannon');
+const benchBase = require('../lib/benchBase');
 
-class benchRegister {
+class benchRegister extends benchBase {
   constructor(options) {
-    this.url = options.url;
-    this.registerPath = options.registerPath ? options.registerPath : '/register';
-    this.registerMethod = options.registerMethod ? options.registerMethod : 'POST';
-    this.registerPostType = options.registerPostType ? options.registerPostType : 'json';
-    this.registerData = options.registerData ? options.registerData : {
-      "client_name": "Benchmark",
-      "application_type": "web",
-      "redirect_uris": [
-        "https://return.local"
-      ],
-      "subject_type": "public",
-      "token_endpoint_auth_method": "client_secret_basic",
-      "id_token_signed_response_alg": "RS256",
-      "grant_types": [
-        "authorization_code",
-        "refresh_token"
-      ]
-    };
+    super(options);
   }
-  
-  getRegisterBody() {
-    switch (this.registerPostType) {
-      case 'form':
-        var fields = [];
-        var registerData = this.registerData;
-        Object.keys(this.registerData).forEach(function(index) {
-          fields.push(index + "=" + encodeURIComponent(registerData[index]));
-        });
-        return fields.join("&");
-      break;
-      case 'json':
-        return JSON.stringify(this.registerData);
-      break
-      default:
-        throw new Exception("Invalid post type, expecting 'json' or 'form'");
-      break;
-    }
-  }
-
-  getRegisterHeaders() {
-    switch (this.registerPostType) {
-      case 'form':
-        return {
-          'Content-Type' : 'application/x-www-form-urlencoded'
-        };
-      break;
-      case 'json':
-        return {
-          'Content-Type' : 'application/json'
-        };
-      break;
-      default:
-        throw new Exception("Invalid post type, expecting 'json' or 'form'");
-      break;
-    }
-  }
-
   run(url) {
-    const autocannon = require('autocannon')
-
+    var wellKnown = await this.getWellKnown();
+    if (DEBUG) {
+      console.log(wellKnown);
+    }
+    this.registerPath = wellKnown.registration_endpoint.replace(this.url, '');
     const instance = autocannon({
       url: this.url,
       connections: process.env.AUTOCANNON_CONNECTIONS,

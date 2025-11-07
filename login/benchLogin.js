@@ -1,55 +1,14 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
+const autocannon = require('autocannon');
+const benchBase = require('../lib/benchBase');
 
-class benchLogin {
+class benchLogin extends benchBase {
   constructor(options) {
-    this.url = options.url;
-    this.loginPath = options.loginPath ? options.loginPath : '/api/login/password';
-    this.loginMethod = options.loginMethod ? options.loginMethod : 'POST';
-    this.loginPostType = options.loginPostType ? options.loginPostType : 'form';
-    this.loginData = options.loginData;
-  }
-  
-  getBody() {
-    switch (this.loginPostType) {
-      case 'form':
-        var fields = [];
-        var loginData = this.loginData;
-        Object.keys(this.loginData).forEach(function(index) {
-          fields.push(index + "=" + encodeURIComponent(loginData[index]));
-        });
-        return fields.join("&");
-      break;
-      case 'json':
-        return JSON.stringify(this.loginData);
-      break
-      default:
-        throw new Exception("Invalid post type, expecting 'json' or 'form'");
-      break;
-    }
-  }
-
-  getHeaders() {
-    switch (this.loginPostType) {
-      case 'form':
-        return {
-          'Content-Type' : 'application/x-www-form-urlencoded'
-        };
-      break;
-      case 'json':
-        return {
-          'Content-Type' : 'application/json'
-        };
-      break;
-      default:
-        throw new Exception("Invalid post type, expecting 'json' or 'form'");
-      break;
-    }
+    super(options);
   }
 
   run(url) {
-    const autocannon = require('autocannon')
-
     const instance = autocannon({
       url: this.url,
       connections: process.env.AUTOCANNON_CONNECTIONS,
@@ -59,9 +18,9 @@ class benchLogin {
       requests: [
         {
           path: this.loginPath,
-          headers: this.getHeaders(),
+          headers: this.getLoginHeaders(),
           method: this.loginMethod,
-          body: this.getBody(),
+          body: this.getLoginBody(),
           setupRequest: function(request, context) {
             if (DEBUG) {
               console.log("----setupRequest login----");

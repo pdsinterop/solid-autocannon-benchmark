@@ -1,15 +1,15 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
+const autocannon = require('autocannon');
+const benchBase = require('../lib/benchBase');
 
-class benchHomePage {
+class benchHomePage extends benchBase {
   constructor(options) {
-    this.url = options.url;
+    super(options);
     this.homePagePath = options.homePagePath ? options.homePagePath : '/';
   }
   
   run(url) {
-    const autocannon = require('autocannon')
-
     const instance = autocannon({
       url: this.url,
       connections: process.env.AUTOCANNON_CONNECTIONS,
