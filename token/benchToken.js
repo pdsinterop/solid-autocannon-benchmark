@@ -15,6 +15,7 @@ class benchToken extends benchBase {
     }
     this.authorizePath = wellKnown.authorization_endpoint.replace(this.url, '');
     this.registerPath = wellKnown.registration_endpoint.replace(this.url, '');
+    this.tokenPath = wellKnown.token_endpoint.replace(this.url, '');
     this.cookie = await this.getLoginCookie();
     this.clientRegistration = await this.getClientRegistration();
     await this.getConsent();

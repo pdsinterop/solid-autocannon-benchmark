@@ -15,13 +15,14 @@ class benchProfile extends benchBase {
     }
     this.authorizePath = wellKnown.authorization_endpoint.replace(this.url, '');
     this.registerPath = wellKnown.registration_endpoint.replace(this.url, '');
+    this.tokenPath = wellKnown.token_endpoint.replace(this.url, '');
     this.cookie = await this.getLoginCookie();
     this.clientRegistration = await this.getClientRegistration();
     await this.getConsent();
     this.code = await this.getAuthorizeCode();
     this.token = await this.getToken();
     this.tokenJwt = JSON.parse(atob(this.token['access_token'].split('.')[1]));
-    this.profileUrl = this.tokenJwt['sub'].split('#')[0];
+    this.profileUrl = this.tokenJwt['sub'].split('#')[0].replace(this.url, '');
     var profileHeaders = this.getProfileHeaders();
         
     const instance = autocannon({
