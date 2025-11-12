@@ -26,7 +26,7 @@ class benchProfile extends benchBase {
     var profileHeaders = this.getProfileHeaders();
         
     const instance = autocannon({
-      url: this.url,
+      url: this.profileUrl,
       connections: process.env.AUTOCANNON_CONNECTIONS,
       duration: process.env.AUTOCANNON_DURATION,
       overallRate: process.env.AUTOCANNON_OVERALL_RATE,
@@ -34,7 +34,6 @@ class benchProfile extends benchBase {
       requests: [
         {
           method: 'GET',
-          path: this.profileUrl,
           setupRequest: function(request, context) {
             request.headers = profileHeaders;
             if (DEBUG) {
