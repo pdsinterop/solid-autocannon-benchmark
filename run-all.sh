@@ -15,3 +15,5 @@ echo "Token";
 node --env-file=.env ./token/run.js
 echo "Profile";
 node --env-file=.env ./profile/run.js
+echo "Storage";
+node --env-file=.env ./storage/run.js
