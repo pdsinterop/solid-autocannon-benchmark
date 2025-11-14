@@ -28,7 +28,7 @@ node --env-file=.env ./login/run.js
 - [x] authorize
 - [x] token exchange
 - [x] solid profile card
-- [ ] fetch things from storage
+- [x] fetch things from storage
 
 ## Quick overview
 ```
@@ -40,4 +40,8 @@ node --env-file=.env ./consent/run.js
 node --env-file=.env ./authorize/run.js
 node --env-file=.env ./token/run.js
 node --env-file=.env ./profile/run.js
+node --env-file=.env ./storage/run.js
 ```
+
+## TODO
+- [ ] Add dpop support

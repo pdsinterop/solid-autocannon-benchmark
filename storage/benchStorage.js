@@ -2,8 +2,11 @@
 const DEBUG = parseInt(process.env.DEBUG);
 const autocannon = require('autocannon');
 const benchBase = require('../lib/benchBase');
+const n3 = require('n3');
+const { DataFactory } = n3;
+const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
-class benchProfile extends benchBase {
+class benchStorage extends benchBase {
   constructor(options) {
     super(options);
   }
@@ -21,12 +24,25 @@ class benchProfile extends benchBase {
     await this.getConsent();
     this.code = await this.getAuthorizeCode();
     this.token = await this.getToken();
+
     this.tokenJwt = JSON.parse(atob(this.token['access_token'].split('.')[1]));
     this.profileUrl = this.tokenJwt['sub'].split('#')[0].replace(this.url, '');
-    var profileHeaders = this.getProfileHeaders();
-        
+    
+    this.profile = await this.getProfile();
+
+    var parser = new n3.Parser({ baseIRI: this.profileUrl });
+    var profileData = parser.parse(this.profile);
+    var storageUrl = '';
+    profileData.forEach(function(quad) {
+      if (quad.predicate.value === 'http://www.w3.org/ns/pim/space#storage') {
+        storageUrl = quad.object.value;
+      }
+    });
+    this.storageUrl = storageUrl;
+    var storageHeaders = this.getStorageHeaders();
+
     const instance = autocannon({
-      url: this.profileUrl,
+      url: this.storageUrl,
       connections: process.env.AUTOCANNON_CONNECTIONS,
       duration: process.env.AUTOCANNON_DURATION,
       overallRate: process.env.AUTOCANNON_OVERALL_RATE,
@@ -35,9 +51,9 @@ class benchProfile extends benchBase {
         {
           method: 'GET',
           setupRequest: function(request, context) {
-            request.headers = profileHeaders;
+            request.headers = storageHeaders;
             if (DEBUG) {
-              console.log("----setupRequest profile----");
+              console.log("----setupRequest storage----");
               console.log(request);
               console.log(context);
               console.log("----------");
@@ -46,7 +62,7 @@ class benchProfile extends benchBase {
           },
           onResponse: function (status, body, context, headers) {
             if (DEBUG) {
-              console.log("----on response profile----");
+              console.log("----on response storage----");
               console.log(status);
               console.log(body);
               console.log(context);
@@ -68,4 +84,4 @@ class benchProfile extends benchBase {
   }
 }
 
-module.exports = benchProfile;
+module.exports = benchStorage;
