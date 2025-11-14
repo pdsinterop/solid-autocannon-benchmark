@@ -1,12 +1,14 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
-const autocannon = require('autocannon');
-const benchBase = require('../lib/benchBase');
-const n3 = require('n3');
+import { default as autocannon } from 'autocannon';
+import { benchBase } from '../lib/benchBase.js';
+import * as n3 from 'n3';
 const { DataFactory } = n3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
-class benchStorage extends benchBase {
+console.log(autocannon);
+
+export class benchStorage extends benchBase {
   constructor(options) {
     super(options);
   }
@@ -83,5 +85,3 @@ class benchStorage extends benchBase {
     }
   }
 }
-
-module.exports = benchStorage;
