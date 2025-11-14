@@ -1,9 +1,9 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
-const autocannon = require('autocannon');
-const benchBase = require('../lib/benchBase');
+import { default as autocannon } from 'autocannon';
+import { benchBase } from '../lib/benchBase.js';
 
-class benchRegister extends benchBase {
+export class benchRegister extends benchBase {
   constructor(options) {
     super(options);
   }
@@ -57,5 +57,3 @@ class benchRegister extends benchBase {
     }
   }
 }
-
-module.exports = benchRegister;

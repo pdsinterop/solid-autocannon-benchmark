@@ -1,5 +1,5 @@
 'use strict'
-const Bench = require('./benchConsent.js');
+import { benchConsent as Bench } from './benchConsent.js';
 const bench = new Bench({
   url : process.env.SOLID_URL,
   loginData : {

@@ -6,8 +6,6 @@ import * as n3 from 'n3';
 const { DataFactory } = n3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
-console.log(autocannon);
-
 export class benchStorage extends benchBase {
   constructor(options) {
     super(options);

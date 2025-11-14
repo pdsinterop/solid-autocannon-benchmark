@@ -1,5 +1,5 @@
 'use strict'
-const Bench = require('./benchAuthorize.js');
+import { benchAuthorize as Bench } from './benchAuthorize.js';
 const bench = new Bench({
   url : process.env.SOLID_URL,
   loginData : {

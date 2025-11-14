@@ -1,5 +1,5 @@
 'use strict'
-const Bench = require('./benchProfile.js');
+import { benchProfile as Bench } from './benchProfile.js';
 const bench = new Bench({
   url : process.env.SOLID_URL,
   loginData : {
