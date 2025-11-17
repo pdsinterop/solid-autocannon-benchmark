@@ -22,9 +22,9 @@ export class benchProfile extends benchBase {
     this.code = await this.getAuthorizeCode();
     this.token = await this.getToken();
     this.tokenJwt = JSON.parse(atob(this.token['access_token'].split('.')[1]));
-    this.profileUrl = this.tokenJwt['sub'].split('#')[0].replace(this.url, '');
+    this.profileUrl = this.tokenJwt['sub'].split('#')[0];
     var profileHeaders = this.getProfileHeaders();
-        
+
     const instance = autocannon({
       url: this.profileUrl,
       connections: process.env.AUTOCANNON_CONNECTIONS,
