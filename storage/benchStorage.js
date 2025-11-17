@@ -1,12 +1,12 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
-const autocannon = require('autocannon');
-const benchBase = require('../lib/benchBase');
-const n3 = require('n3');
+import { default as autocannon } from 'autocannon';
+import { benchBase } from '../lib/benchBase.js';
+import * as n3 from 'n3';
 const { DataFactory } = n3;
 const { namedNode, literal, defaultGraph, quad } = DataFactory;
 
-class benchStorage extends benchBase {
+export class benchStorage extends benchBase {
   constructor(options) {
     super(options);
   }
@@ -26,8 +26,7 @@ class benchStorage extends benchBase {
     this.token = await this.getToken();
 
     this.tokenJwt = JSON.parse(atob(this.token['access_token'].split('.')[1]));
-    this.profileUrl = this.tokenJwt['sub'].split('#')[0].replace(this.url, '');
-    
+    this.profileUrl = this.tokenJwt['sub'].split('#')[0];
     this.profile = await this.getProfile();
 
     var parser = new n3.Parser({ baseIRI: this.profileUrl });
@@ -83,5 +82,3 @@ class benchStorage extends benchBase {
     }
   }
 }
-
-module.exports = benchStorage;

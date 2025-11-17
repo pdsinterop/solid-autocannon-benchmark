@@ -1,9 +1,10 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
-const autocannon = require('autocannon');
-const benchBase = require('../lib/benchBase');
 
-class benchHomePage extends benchBase {
+import { default as autocannon } from 'autocannon';
+import { benchBase } from '../lib/benchBase.js';
+
+export class benchHomePage extends benchBase {
   constructor(options) {
     super(options);
     this.homePagePath = options.homePagePath ? options.homePagePath : '/';
@@ -53,4 +54,3 @@ class benchHomePage extends benchBase {
   }
 }
 
-module.exports = benchHomePage;

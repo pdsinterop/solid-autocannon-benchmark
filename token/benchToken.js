@@ -1,9 +1,9 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
-const autocannon = require('autocannon');
-const benchBase = require('../lib/benchBase');
+import { default as autocannon } from 'autocannon';
+import { benchBase } from '../lib/benchBase.js';
 
-class benchToken extends benchBase {
+export class benchToken extends benchBase {
   constructor(options) {
     super(options);
   }
@@ -23,7 +23,7 @@ class benchToken extends benchBase {
 
     var tokenPath = this.tokenPath;
     var tokenMethod = this.tokenMethod;
-    var tokenHeaders = this.getTokenHeaders();
+    var tokenHeaders = await this.getTokenHeaders();
     var tokenBody = this.getTokenBody();
 
     const instance = autocannon({
@@ -70,5 +70,3 @@ class benchToken extends benchBase {
     }
   }
 }
-
-module.exports = benchToken;

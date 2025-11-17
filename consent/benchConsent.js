@@ -1,14 +1,22 @@
 'use strict'
 const DEBUG = parseInt(process.env.DEBUG);
-const autocannon = require('autocannon');
-const benchBase = require('../lib/benchBase');
+import { default as autocannon } from 'autocannon';
+import { benchBase } from '../lib/benchBase.js';
 
-class benchConsent extends benchBase {
+export class benchConsent extends benchBase {
   constructor(options) {
     super(options);
   }
 
   async run(url) {
+    var wellKnown = await this.getWellKnown();
+    if (DEBUG) {
+      console.log(wellKnown);
+    }
+    this.authorizePath = wellKnown.authorization_endpoint.replace(this.url, '');
+    this.registerPath = wellKnown.registration_endpoint.replace(this.url, '');
+    this.tokenPath = wellKnown.token_endpoint.replace(this.url, '');
+
     var cookie = await this.getLoginCookie();
     var clientRegistration = await this.getClientRegistration();
     this.clientRegistration = clientRegistration;
@@ -64,5 +72,3 @@ class benchConsent extends benchBase {
     }
   }
 }
-
-module.exports = benchConsent;
