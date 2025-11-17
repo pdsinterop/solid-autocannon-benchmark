@@ -9,6 +9,14 @@ export class benchConsent extends benchBase {
   }
 
   async run(url) {
+    var wellKnown = await this.getWellKnown();
+    if (DEBUG) {
+      console.log(wellKnown);
+    }
+    this.authorizePath = wellKnown.authorization_endpoint.replace(this.url, '');
+    this.registerPath = wellKnown.registration_endpoint.replace(this.url, '');
+    this.tokenPath = wellKnown.token_endpoint.replace(this.url, '');
+
     var cookie = await this.getLoginCookie();
     var clientRegistration = await this.getClientRegistration();
     this.clientRegistration = clientRegistration;
