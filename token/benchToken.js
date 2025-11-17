@@ -23,7 +23,7 @@ export class benchToken extends benchBase {
 
     var tokenPath = this.tokenPath;
     var tokenMethod = this.tokenMethod;
-    var tokenHeaders = this.getTokenHeaders();
+    var tokenHeaders = await this.getTokenHeaders();
     var tokenBody = this.getTokenBody();
 
     const instance = autocannon({
