@@ -26,8 +26,7 @@ export class benchStorage extends benchBase {
     this.token = await this.getToken();
 
     this.tokenJwt = JSON.parse(atob(this.token['access_token'].split('.')[1]));
-    this.profileUrl = this.tokenJwt['sub'].split('#')[0].replace(this.url, '');
-    
+    this.profileUrl = this.tokenJwt['sub'].split('#')[0];
     this.profile = await this.getProfile();
 
     var parser = new n3.Parser({ baseIRI: this.profileUrl });
