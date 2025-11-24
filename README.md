@@ -4,7 +4,7 @@ This repo contains benchmarking / load testing scripts for Solid servers. The te
 The code uses the DPoP flow for authorization and tokens.
 
 The benchmark has been tested against the following server implementations:
-- PHP Solid Serve
+- PHP Solid Server
 - Solid Nextcloud
 - Node solid server
 
