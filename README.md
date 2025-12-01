@@ -48,6 +48,19 @@ node --env-file=.env ./token/run.js
 node --env-file=.env ./profile/run.js
 node --env-file=.env ./storage/run.js
 ```
+## Authentication for environments with cookies
+Some servers (such as Solid-Nextcloud) are a bit hard to convince to do
+automated logins. For this scenario, it is possible to directly supply a
+login cookie to the benchmark tools.
+
+If you want to run a benchmark on an environment that uses a cookie-based
+login, you can run the benchmark with a logged in session by setting
+```
+SOLID_LOGIN_COOKIE
+```
+in the env file. The contents should be whatever cookie the logged in session is
+sending to the server. You can find this in the developer tools of your
+browser, in the Set-Cookie header of an authenticated request.
 
 # Notes
 
