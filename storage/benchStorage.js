@@ -38,7 +38,7 @@ export class benchStorage extends benchBase {
       }
     });
     this.storageUrl = storageUrl;
-    var storageHeaders = this.getStorageHeaders();
+    var storageHeaders = await this.getStorageHeaders(this.storageUrl);
 
     const instance = autocannon({
       url: this.storageUrl,
